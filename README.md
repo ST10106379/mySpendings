@@ -1,4 +1,4 @@
-# MySpendings 💰
+# MySpendings 
 
 A personal *Budget Tracker Android App* built with Kotlin and Android Studio. MySpendings helps users manage their finances by tracking expenses, setting budget goals, and organizing spending by category — all stored locally on the device.
 
@@ -40,7 +40,7 @@ A personal *Budget Tracker Android App* built with Kotlin and Android Studio. My
 
 1. Clone the repository:
    bash
-   git clone https://github.com/your-username/mySpendings.git
+   git clone https://github.com/your-ST10106379/mySpendings.git
    
 2. Open the project in *Android Studio*
 3. Let Gradle sync and resolve all dependencies
