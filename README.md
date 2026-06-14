@@ -1,85 +1,125 @@
-# MySpendings 
+# mySpendings 
 
-A personal *Budget Tracker Android App* built with Kotlin and Android Studio. MySpendings helps users manage their finances by tracking expenses, setting budget goals, and organizing spending by category — all stored locally on the device.
+**mySpendings** is an Android budget tracking app that helps users log expenses, organise spending into categories, set monthly budget goals, and visualise their financial habits — all backed by a local Room database and secured with Firebase Authentication.
 
 ---
 
-## Features
+##  Purpose of the App
 
-- *User Login* — Secure access to the app using a username and password
-- *Expense Categories* — Create and manage custom categories to organize expense and budget entries
-- *Expense Entries* — Log detailed expense entries including date, start and end times, description, and category
-- *Photo Attachments* — Optionally attach a photograph to any expense entry for reference
-- *Budget Goals* — Set a minimum and maximum monthly spending goal to stay on track
-- *Expense List* — View all expense entries for a user-selectable time period, with the ability to access any attached photos directly from the list
-- *Category Spending Summary* — View the total amount spent per category over a user-selectable period
-- *Offline Storage* — All data is saved locally using RoomDB, ensuring the app works fully offline without needing an internet connection
+Managing personal finances can be overwhelming, especially for students and young professionals juggling irregular income and multiple expense categories. **mySpendings** was built to make budgeting simple, visual, and even a little fun.
+
+The app allows users to:
+- Securely register and log in
+- Log expenses with a date, category, and amount
+- Create and manage their own custom categories
+- Set minimum and maximum monthly spending goals
+- View graphs showing spending per category over a selected period
+- Track progress toward budget goals in a clear visual format
+- Earn badges and rewards for healthy budgeting habits
 
 ---
 
 ## Tech Stack
 
-| Technology | Purpose |
+| Component | Technology |
 |---|---|
-| Kotlin | Primary programming language |
-| Android Studio | Development environment |
-| RoomDB | Local database for offline data persistence |
-| SQLite | Underlying database engine |
-| Android Jetpack | Navigation, ViewModel, LiveData |
+| Language | Kotlin |
+| UI | XML Layouts, Material Design Components |
+| Navigation | Android Navigation Component (Fragments) |
+| Local Database | Room (SQLite) |
+| Authentication | Firebase Authentication |
+| Charts/Graphs | MPAndroidChart |
+| Async | Kotlin Coroutines |
+| Build System | Gradle (Kotlin DSL), KSP for annotation processing |
+| Version Control | Git & GitHub |
 
 ---
 
-## Getting Started
+## Design Considerations
 
-### Prerequisites
-- Android Studio (latest version recommended)
-- Android device or emulator running API 21 or higher
-- JDK 8 or above
+- **Fragment-based architecture** — A single `MainActivity` hosts all screens (Dashboard, Add Expense, Expenses, Categories, Budget Goals, Analytics, Achievements) via the Navigation Component, giving the app a smooth, single-activity feel with a consistent navigation drawer.
 
-### Installation
+- **Separation of concerns** — Data access is isolated in DAOs (`UserDao`, `ExpenseDao`, `CategoryDao`), with `AppDatabase` as the single Room database instance, keeping UI code free of direct SQL logic.
+
+- **Session management** — `SessionManager` bridges Firebase Authentication with the local Room database, mapping each Firebase user to a local numeric `userId` so that all expenses, categories, and goals remain scoped to the logged-in user.
+
+- **Security** — Authentication is handled entirely by Firebase (email/password), removing the need to store passwords locally and providing a production-grade login system.
+
+- **Visual feedback** — Progress bars, charts, and colour-coded indicators were used throughout so users get immediate visual insight into their spending habits without needing to read numbers closely.
+
+---
+
+##  Custom Features
+
+In addition to the core requirements, two custom features were implemented:
+
+### 1. Firebase Authentication
+The original prototype used a locally stored username/password system in Room. For the final submission, this was replaced with **Firebase Authentication** (email & password). This gives the app:
+- Secure, industry-standard credential handling
+- Real account creation and sign-in flows
+- A foundation for future features like password reset or Google Sign-In
+
+ *Look for it in:* `LoginActivity.kt`, `RegisterActivity.kt`, `SessionManager.kt`
+
+### 2. Gamification / Achievements System
+A dedicated **Achievements** screen rewards users with badges for good budgeting behaviour, including:
+- First Steps — logging your first expense
+- Consistent Logger — active 5+ days in a week
+- Budget Guardian — staying within the monthly budget
+- Category Master — creating 3+ categories
+- Expense Explorer — logging 10+ expenses
+- Savings Hero — spending 20% under budget
+- Streak Master — active 20+ days in the last 30
+- Budget Alert — a warning badge when over budget
+
+Each badge includes a progress bar showing how close the user is to unlocking it, encouraging consistent engagement with the app.
+ *Look for it in:* `GamificationFragment.kt`, `fragment_gamification.xml`, `item_badge.xml`
+
+---
+
+## Key Screens
+
+- **Dashboard** — overview of recent spending and quick stats
+- **Add Expense** — log a new expense with date, category, and amount
+- **Expenses** — full list of logged expenses
+- **Categories** — create and manage custom spending categories
+- **Budget Goals** — set minimum and maximum monthly spending goals
+- **Analytics** — graph of spending per category over a selectable period, with min/max goal lines, plus a visual indicator of how well the user is tracking against their goals
+- **Achievements** — gamified badges rewarding good budgeting habits
+
+---
+
+## Setup Instructions
 
 1. Clone the repository:
-   bash
-   git clone https://github.com/your-ST10106379/mySpendings.git
-   
-2. Open the project in *Android Studio*
-3. Let Gradle sync and resolve all dependencies
-4. Run the app on an emulator or physical Android device
+   ```bash
+   git clone https://github.com/<your-username>/mySpendings.git
+   ```
+2. Open the project in **Android Studio**
+3. Add your own `google-services.json` file to the `app/` directory (for Firebase Authentication)
+4. Sync Gradle (`File → Sync Project with Gradle Files`)
+5. Run the app on an emulator or physical device (`Build → Run`)
 
 ---
 
-## How to Use
+## Version Control & GitHub
 
-1. *Log in* with your username and password
-2. *Create categories* to group your expenses (e.g. Food, Transport, Entertainment)
-3. *Add expense entries* with a date, time range, description, and category — optionally attach a photo
-4. *Set monthly budget goals* — define a minimum and maximum spending target
-5. *View your expenses* by selecting a date period to filter the list
-6. *Check category totals* to see how much you've spent per category over any selected period
+This repository was initialised with a README and developed using regular, incremental commits to track progress feature-by-feature (database setup, UI screens, Firebase integration, analytics, gamification).
 
----
-
-## Project Structure
-
-
-mySpendings/
-├── app/
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/com/example/myspendings/
-│   │   │   │   ├── MainActivity.kt
-│   │   │   │   ├── fragments/
-│   │   │   │   ├── database/
-│   │   │   │   └── models/
-│   │   │   └── res/
-│   │   │       ├── layout/
-│   │   │       └── navigation/
-├── build.gradle.kts
-└── README.md
-
+**Workflow used:**
+- Feature-based commits (e.g. "Add gamification fragment", "Integrate Firebase Auth", "Fix Room/KSP dependency conflict")
+- Regular pushes to `main` to keep the remote repository up to date
+- Issues encountered (e.g. KAPT → KSP migration, Kotlin/Firebase version conflicts) were resolved and committed as fixes, documenting the development process
 
 ---
 
-## License
+## Authors
 
-This project was developed as part of a practical assessment for *The Independent Institute of Education (IIE) © 2026*.
+- ST10106379
+- ST10233093
+
+---
+
+## 📄 License
+
+This project was developed for academic purposes as part of a Mobile App Development module.
